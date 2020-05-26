@@ -1,3 +1,9 @@
+# Team 26
+# Hina Bagai - 1070601
+# Charu Smita Singh - 1029083
+# Ariel Kark - 521428
+# Raksha Kammandore Ravi - 1094298
+
 - hosts: [web-server]
   tasks:
   - name: Add proxy in /etc/environment
