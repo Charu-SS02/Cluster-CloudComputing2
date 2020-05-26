@@ -1,0 +1,38 @@
+- hosts: [web-server]
+  tasks:
+  - name: Add proxy in /etc/environment
+    become: yes
+    blockinfile:
+      path: /etc/environment
+      block: |
+        http_proxy="http://wwwproxy.unimelb.edu.au:8000"
+        https_proxy="http://wwwproxy.unimelb.edu.au:8000"
+        ftp_proxy="http://wwwproxy.unimelb.edu.au:8000"
+        HTTP_PROXY="http://wwwproxy.unimelb.edu.au:8000"
+        HTTPS_PROXY="http://wwwproxy.unimelb.edu.au:8000"
+        no_proxy="localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au"
+
+  - name: apt-get Update
+    become: true
+    apt:
+      update_cache: yes
+
+- hosts: all
+  tasks:
+  - name: Install Packages
+    become: true
+    apt:
+      state: latest
+      update_cache: yes
+      name: ['python3-pip', 'vim']
+
+  - name: Install Libraries
+    become: true
+    command: pip3 install {{ item }}
+    with_items:
+      - tweepy
+      - couchdb
+
+  - name: Run Harvester
+    become: true
+    raw: nohup python3 tweet_harvester.py 1 > /dev/null 2 > /dev/null &
