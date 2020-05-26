@@ -9,8 +9,8 @@ The harvester program is used to gather tweets from 5 states of Australia and us
 
 We mapped the correlation using MapReduce function and narrated the analytics story through spectacular visual charts on our website.
 
-# Team 26
-# Hina Bagai - 1070601
-# Charu Smita Singh - 1029083
-# Ariel Kark - 521428
-# Raksha Kammandore Ravi - 1094298
+Team 26
+Hina Bagai - 1070601
+Charu Smita Singh - 1029083
+Ariel Kark - 521428
+Raksha Kammandore Ravi - 1094298
