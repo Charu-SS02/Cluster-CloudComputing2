@@ -1,7 +1,6 @@
 import tweepy
 import couchdb
 import json
-import math
 from urllib3.exceptions import ProtocolError
 
 access_key = 'ijcwMgXJquxCq6TJPbdofkYcd'
