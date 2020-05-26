@@ -1,4 +1,6 @@
 Cluster & Cloud Computing Assignment 2
+
+
 This project outlines the work undertaken by Team 26 towards completion of Cluster and Cloud Computing - Assignment 2 wherein a Social Media Analytics system was constructed with the aid of National eResearch Collaboration Tools and Resources (Nectar) in conjunction with datasets from Twitter and AURIN to present interesting stories about life in Australian cities. It aims to provide valuable insights pertaining to different scenarios prevalent in Australian cities through detailed analysis and intelligible representations of the knowledge gained.
 
 The proposed research mainly focuses on the scenario in each state in Australia, where the tweets are in a foreign language and draw a correlation to the English language proficiency of immigrants in that state. Thus the analysis provides us with adequate knowledge to decide which state in Australia has maximum foreign language tweets with respect to an immigrant's English language proficiency.
