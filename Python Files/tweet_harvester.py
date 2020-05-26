@@ -1,8 +1,9 @@
+#code for streaming tweets
 import tweepy
 import couchdb
 import json
 from urllib3.exceptions import ProtocolError
-
+### TWITTER CREDENTIALS ###
 access_key = 'ijcwMgXJquxCq6TJPbdofkYcd'
 access_secret = 'xkiQYXxnL4Xke1kDFiMj9RfYHtqIjM1mH9bf7dFHrUFrawSmD7'
 
@@ -43,7 +44,7 @@ class MyStreamListener(tweepy.StreamListener):
         print(exception)
         return
 
-
+### TWITTER STREAM LISTENER ###
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
 
