@@ -1,0 +1,70 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+
+# Volumes
+volumes:
+  - vol_name: volume1
+    vol_size: 40
+    # device: /dev/vdb
+    # mountpoint: /data
+  - vol_name: volume2
+    vol_size: 70
+    # device: /dev/vdb
+    # mountpoint: /data
+  - vol_name: volume3
+    vol_size: 70
+    # device: /dev/vdb
+    # mountpoint: /data
+  - vol_name: volume4
+    vol_size: 70
+    # device: /dev/vdb
+    # mountpoint: /data
+
+# Security groups
+security_groups:
+  - name: security-group1
+    description: "Security group for web server"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: security-group2
+    description: "Security group for analysis server"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: security-group3
+    description: "Security group for couchdb servers"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: security-group4
+    description: "Security group for couchdb servers"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+    
+    
+# Instances
+instances:
+  - name: web-server
+    security_groups: security-group1
+    volumes: ['volume1']
+  - name: analysis-server
+    security_groups: security-group2
+    volumes: ['volume2']
+  - name: db-server1
+    security_groups: security-group3
+    volumes: ['volume3']
+  - name: db-server2
+    security_groups: security-group4
+    volumes: ['volume4']
+
+instance_network: qh2-uom-internal
+instance_image: 45225edb-66d8-4fd0-bf41-132a31a18166
+instance_key_name: Hina-Key
+instance_flavor: uom.mse.2c9g
+project_working_directory: /Users/hina/Documents/Cluster & Cloud Computer

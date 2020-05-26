@@ -1,0 +1,52 @@
+---
+# Create an instance on NeCTAR
+- name: Create an instance
+  os_server:
+    name: '{{ item.name }}'
+    image: '{{ instance_image }}'
+    key_name: '{{ instance_key_name }}'
+    flavor: '{{ instance_flavor }}'
+    availability_zone: '{{ availability_zone }}'
+    network: '{{ instance_network }}'
+    security_groups: '{{ sg_names }}'
+    volumes: '{{ item.volumes }}'
+    auto_floating_ip: yes
+    wait: yes
+    timeout: 600
+    state: present
+  loop: '{{ instances }}'
+  register: os_instance
+
+- debug:
+    msg: "Instance {{ item.openstack.name }} has been created. IP address is {{ item.openstack.public_v4 }}"
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: Wait for connection
+  wait_for:
+    host: "{{ item.openstack.public_v4 }}"
+    port: 22
+    timeout: 120
+    search_regex: OpenSSH
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+# Add hosts to Ansible in-memory inventory
+- name: Add host
+  add_host:
+    name: '{{ item.openstack.public_v4 }}'
+    groups: COMP90024
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: Create inventory file 
+  copy: 
+    content: "[all:vars]\nansible_interpreter=/usr/bin/python3\nansible_user=ubuntu\nansible_ssh_private_key_file=Hina-Key.pem\nansible_ssh_common_args='-o StrictHostKeyChecking=no'\n\n" 
+    dest: "{{project_working_directory}}/ansible/inventory/hosts.ini"
+
+- name: Add Host to inventory file 
+  lineinfile: 
+    line: "[{{ item.openstack.name }}]\n{{ item.openstack.public_v4 }}\n" 
+    dest: "{{project_working_directory}}/ansible/inventory/hosts.ini" 
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined

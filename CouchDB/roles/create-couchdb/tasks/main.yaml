@@ -1,0 +1,48 @@
+
+- name: Add CouchDB apt repository key
+  tags: 'couchdb'
+  become: yes
+  apt_key:
+    url: https://couchdb.apache.org/repo/bintray-pubkey.asc
+    state: present
+
+- name: Add CouchDB apt repository and update apt cache
+  tags: 'couchdb'
+  become: yes
+  apt_repository:
+    repo: "deb https://apache.bintray.com/couchdb-deb bionic main"
+    mode: '644'
+    update_cache: yes
+    state: present
+
+- name: apt-get Update
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install CouchDB
+  become: yes
+  apt:
+    name: couchdb
+  register: couchdb_install
+
+- name: Install CouchDB
+  become: yes
+  raw:
+    sudo apt-get install couchdb
+
+- name: Start CouchDB
+  become: yes
+  raw:
+    echo "-name couchdb@{{ansible_default_ipv4.address}}" >> /opt/couchdb/etc/vm.args;
+    echo "-kernel inet_dist_listen_min 9100" >> /opt/couchdb/etc/vm.args;
+    echo "-kernel inet_dist_listen_max 9100" >> /opt/couchdb/etc/vm.args;
+    echo "admin = admin" >> /opt/couchdb/etc/local.ini;
+    sudo /etc/init.d/couchdb stop;
+    echo "[chttpd]\nport = 5984\nbind_address = 0.0.0.0" >> /opt/couchdb/etc/local.ini; 
+    sudo /etc/init.d/couchdb start;
+    sleep 10
+
+- name: Config CouchDB
+  raw:
+    curl -X POST -H "Content-Type:application/json" http://admin:admin@127.0.0.1:5984/_cluster_setup -d'{"action":"enable_cluster", "bind_address":"0.0.0.0", "username":"admin", "password":"admin", "node_count":"3"}'

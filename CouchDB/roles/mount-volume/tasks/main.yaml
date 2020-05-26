@@ -1,0 +1,23 @@
+
+- name: Create file system
+  become: yes
+  raw:
+    sudo mkfs.ext4 /dev/vdb
+
+- name: Create directory to mount
+  raw: sudo mkdir /data
+
+- name: Mount device
+  raw:
+    sudo mount -t auto /dev/vdb  /data
+
+- name: Create directory
+  raw: sudo mkdir /data/couchdb
+
+- name: Install dependencies
+  tags: 'couchdb'
+  become: yes
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common' ]
+    state: latest
+    install_recommends: no

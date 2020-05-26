@@ -1,0 +1,29 @@
+
+- hosts: all
+  gather_facts: true
+
+  roles:
+    - role: common
+    - role: mount-volume
+    - role: create-couchdb
+
+- hosts: analysis-server
+  vars:
+    - db-server1: "{{ groups['db-server1'][0] }}"
+    - db-server2: "{{ groups['db-server2'][0] }}"
+  roles:
+    - role: create-cluster
+
+- hosts: db-server1
+  vars:
+    - db-server1: "{{ groups['analysis-server'][0] }}"
+    - db-server2: "{{ groups['db-server2'][0] }}"
+  roles:
+    - role: create-cluster
+
+- hosts: db-server2
+  vars:
+    - db-server1: "{{ groups['db-server1'][0] }}"
+    - db-server2: "{{ groups['analysis-server'][0] }}"
+  roles:
+    - role: create-cluster
