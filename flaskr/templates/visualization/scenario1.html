@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Australian States Data</h1>
+
+<head>
+<style>
+    ul {
+        font-size: 0.85em;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 0px;
+        text-align: left;
+    }
+
+    #map {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: inherit;
+        bottom: inherit;
+        height: 100%;
+        width: 90%;
+    }
+
+    .map-overlay {
+        position: absolute;
+        bottom: inherit;
+        right: inherit;
+        background: rgba(255, 255, 255, 0.8);
+        margin-right: 20px;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+        border-radius: 3px;
+    }
+
+    #features {
+        top: inherit;
+        margin-top: 20px;
+        margin-left: 20px;
+        width: 250px;
+    }
+
+    #legend {
+        padding: 10px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 18px;
+        height: 150px;
+        margin-bottom: 40px;
+        width: 100px;
+    }
+
+    .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+    }
+
+    #pd {
+        margin-left: 10px;
+        margin-top: 10px;
+        font-family: 'Roboto';
+    }
+</style>
+</head>
+
+<div class="container">
+    <div id='map'></div>
+    <div class='map-overlay' id='features'>
+        <div id='pd'>
+            <p>Hover over a state!</p>
+        </div>
+    </div>
+<!--    <div class='map-overlay' id='legend'></div>-->
+</div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhcnUwMiIsImEiOiJja2Fua3pjZjExMjg3MnJwa21wY2JvMHc2In0.PxNaDl7-xRiU6WDVTEJRMA';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/charu02/ckanl5kw7237t1ike2p5yd9o8',
+        center: [134.326164, -28.407418],
+        zoom: 3.38
+    });
+
+    map.on('mousemove', function(e) {
+        var states = map.queryRenderedFeatures(e.point, {
+            layers: ['statesData']
+        });
+
+        if (states.length > 0) {
+            document.getElementById('pd').innerHTML = '<h4><strong>' + states[0].properties.state_name + '</strong></h4><ul>'
+                                                    + '<li><strong>Total tweets: <em>' + states[0].properties.total_tweet_count + '</strong></em></li>'
+                                                    + '<li><strong>Tweets in foreign language: <em>' + states[0].properties.foreign_language_tweet_count + '</strong></em></li>'
+                                                    + '<li><strong>Most used foreign language for tweets: <em>' + states[0].properties.most_tweeted_foreign_language + '</strong></em></li>'
+                                                    + '<li><strong>Immigrant population: <em>' + states[0].properties.overseas_population + '</strong></em></li></ul>'
+        } else {
+            document.getElementById('pd').innerHTML = '<p>Hover over a state!</p>';
+        }
+    });
+
+    map.getCanvas().style.cursor = 'default';
+</script>
+{% endblock %}

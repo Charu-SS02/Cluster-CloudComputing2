@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col col-8">
+      <h2>Twitter Analytics on the Cloud</h2><br>
+      <p>Project URL: <a href="https://github.com/raksinfinity/CloudAssignment">Github</a></p>
+      <p>Team: Group 26
+        <ul>
+          <li>Ariel Kark</li>
+          <li>Charu Smita Singh</li>
+          <li>Hina Bagai</li>
+          <li>Raksha Ravi</li>
+        </ul>
+      </p>
+    </div>
+    <div class="col">
+      <img class="img-fluid" src="{{ url_for('static', filename='images/clc.jpeg')}}">
+    </div>
+    <footer class="footer">
+      <div class="container text-center">
+        <span class="text-muted">Made by Group 26</a> @ UniMelb Cluster and Cloud Computing</span>
+      </div>
+    </footer>
+  </div>
+{% endblock %}

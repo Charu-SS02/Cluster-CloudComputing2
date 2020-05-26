@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Statistical Analysis</h1>
+
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+<div class="container" id="chart-container-1"></div>
+<script>
+    Highcharts.chart('chart-container-1', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Immigrant English Proficiency and Foreign Language Tweets Comparison'
+        },
+        xAxis: {
+            categories: {{ data['categories']|safe }},
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Percentage (%)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: '#FFFFFF',
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            color:'#ED7165',
+            name: '% of immigrants proficient in English',
+            data: {{ data['eng_prof_y']|safe }}
+        }, {
+            color:'#5CAEE3',
+            name: '% of immigrants non-proficient in English',
+            data: {{ data['eng_prof_n']|safe }}
+        }, {
+            color:'#F7B039',
+            name: '% of tweets in foreign languages',
+            data: {{ data['foreign_tweet']|safe }}
+        }]
+    });
+</script>
+</div>
+{% endblock %}
